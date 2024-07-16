@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.0.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Traveller.com</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav__logo"><a href="Home.html">Traveller.com</a></div>
+
+      <div class="nav__logo"><a href="#"></a></div>
+      <ul class="nav__links">
+        <li><a class="link" href="Home.html">Home</a></li>
+        <li><a class="link" href="Blog.html">Blog</a></li>
+        <li><a class="link" href="Offers.html">Offers</a></li>
+        <li><a class="link" href="Services.html">Services</a></li>
+        <li><a class="link" href="ContactUs.html">Contact Us</a></li>
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Gaurav
+        </button>
+        <ul class="dropdown-menu dropdown-menu-dark">
+          <li><a class="dropdown-item active" href="login.html">logout</a></li>
+        </ul>
+      </div>
+      </ul>
+    </nav>
+    <header>
+      <div class="section__container">
+        <div class="header__content">
+          <br /><br />
+          <h2>Contact Form</h2>
+          <form id="contact_form" name="contact_form" method="post">
+            <div class="mb-5-row">
+              <div class="col">
+                <label for="first_name">First Name</label>
+                <input
+                  type="text"
+                  required
+                  maxlength="50"
+                  class="form-control"
+                  id="first_name"
+                  name="first_name"
+                />
+              </div>
+              <div class="col">
+                <label for="last_name">Last Name</label>
+                <input
+                  type="text"
+                  required
+                  maxlength="50"
+                  class="form-control"
+                  id="last_name"
+                  name="last_name"
+                />
+              </div>
+            </div>
+            <div class="mb-5-row">
+              <div class="col">
+                <label for="email_addr">Email address</label>
+                <input
+                  type="email"
+                  required
+                  maxlength="50"
+                  class="form-control"
+                  id="email_addr"
+                  name="email"
+                  placeholder="name@example.com"
+                />
+              </div>
+              <div class="col">
+                <label for="phone_input">Phone</label>
+                <input
+                  type="tel"
+                  required
+                  maxlength="15"
+                  class="form-control"
+                  id="phone_input"
+                  name="phone"
+                  placeholder="123-456-7890"
+                  pattern="\d{3}[\-]\d{3}[\-]\d{4}"
+                />
+              </div>
+            </div>
+            <div class="mb-5">
+              <label for="message">Message</label>
+              <textarea
+                class="form-control"
+                id="message"
+                name="message"
+                rows="5"
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary px-4 btn-lg">
+              Post
+            </button>
+          </form>
+        </div>
+      </div>
+    </header>
+  </body>
+</html>

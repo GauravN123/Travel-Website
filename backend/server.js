@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -230,3 +231,5 @@ app.get("/", async (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+=======
+>>>>>>> main
