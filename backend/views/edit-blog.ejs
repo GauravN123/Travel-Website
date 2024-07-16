@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create New Blog</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="stylelogout.css" />
+    <link rel="stylesheet" href="stylecreateblog.css" />
+
+  </head>
+
+  <body>   
+
+      form button[type="submit"]:hover {
+        background-color: #555;
+      }
+    </style>
+    <nav>
+      <div class="nav__logo">
+        <a href="/">Traveller.com</a>
+      </div>
+      <ul class="nav__links">
+        <li><a class="link" href="/">Home</a></li>
+        <li><a class="link" href="/Blog">Blog</a></li>
+        <li><a class="link" href="/Offers">Offers</a></li>
+        <li><a class="link" href="/Services">Services</a></li>
+        <li><a class="link" href="/ContactUs">ContactUs</a></li>
+
+        <% if (user) { %>
+        <li class="dropdown">
+          <button class="user-email"><%= user.email %></button>
+          <div class="dropdown-content">
+            <a href="/logout">Log out</a>
+          </div>
+        </li>
+        <% } else { %>
+        <li><a href="/login">Log in</a></li>
+        <li><a href="/signup">Sign up</a></li>
+        <% } %>
+      </ul>
+    </nav>
+
+    <br /><br /><br /><br /><br />
+  
+    <!-- <div class="container" id="blog-container"></div> -->
+    <center>
+   <h1>Edit Blog</h1>
+  <form id="editBlogForm">
+    <input type="hidden" id="editBlogId" value="" />
+    <input type="text" id="editTitle" placeholder="Title" required value="" />
+    <input type="text" id="editImageUrl" placeholder="Image URL" required value="" />
+    <textarea id="editExcerpt" placeholder="Excerpt" required></textarea>
+    <button type="button" onclick="submitEdit()">Save Changes</button>
+  </form>
+</center>
+
+  <script>
+    async function editBlog(id, updatedBlogData) {
+      try {
+        const response = await fetch(`/api/blogs/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedBlogData),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Blog updated:", data);
+          window.location.href = "/Blog"; // Redirect to the blog page or another appropriate page
+        } else {
+          const errorData = await response.json();
+          alert(`Error editing blog: ${errorData.error}`);
+        }
+      } catch (error) {
+        console.error("Error editing blog:", error);
+      }
+    }
+
+    function submitEdit() {
+      const id = document.getElementById("editBlogId").value;
+      const updatedBlogData = {
+        title: document.getElementById("editTitle").value,
+        imageUrl: document.getElementById("editImageUrl").value,
+        excerpt: document.getElementById("editExcerpt").value,
+        content: document.getElementById("editContent").value,
+      };
+
+      editBlog(id, updatedBlogData);
+    }
+  </script>

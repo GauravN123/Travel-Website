@@ -1,0 +1,73 @@
+/* General styling for the body */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Styling for the form container */
+form {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  box-sizing: border-box;
+}
+
+/* Styling for headings */
+form h1,
+form h2 {
+  margin: 0 0 15px 0;
+  color: #333;
+  text-align: center;
+}
+
+/* Styling for form labels */
+form label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+/* Styling for form inputs */
+form input[type="text"],
+form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Styling for error messages */
+form .error {
+  color: #e74c3c;
+  font-size: 0.875em;
+  margin-bottom: 10px;
+  display: none; /* Hidden by default, shown when there's an error */
+}
+
+/* Styling for the submit button */
+form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #3498db;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+/* Change button color on hover */
+form button:hover {
+  background-color: #2980b9;
+}
