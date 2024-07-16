@@ -3,18 +3,27 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const Blog = require("./models/Blog.js");
+<<<<<<< HEAD
 const Readmore = require("./models/readmore.js");
 const authRoutes = require("./routes/authRoutes.js");
 const cookieParser = require("cookie-parser");
 const { requireAuth, checkUser } = require("./middleware/authMiddleware.js");
 const checkRole = require("./middleware/checkRole");
 
+=======
+const authRoutes = require("./routes/authRoutes.js");
+const cookieParser = require("cookie-parser");
+const { requireAuth, checkUser } = require("./middleware/authMiddleware.js");
+>>>>>>> origin/master
 const app = express();
 const port = 3000;
 
 // Connect to MongoDB
 const uri = "mongodb+srv://Gaurav:welcome123@cluster0.93ry3pd.mongodb.net/blog";
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 mongoose
   .connect(uri, {
     useNewUrlParser: true,
@@ -26,7 +35,10 @@ mongoose
 // Middleware
 app.use(cors());
 app.use(express.json());
+<<<<<<< HEAD
 app.use(express.urlencoded({ extended: true }));
+=======
+>>>>>>> origin/master
 app.use(cookieParser());
 
 // Serve static files from the 'frontend' directory
@@ -39,13 +51,26 @@ app.set("view engine", "ejs");
 // Define routes
 app.get("*", checkUser);
 
+<<<<<<< HEAD
+=======
+// app.get("/", requireAuth, (req, res) => {
+//   res.sendFile(path.join(__dirname, "./views/Home.ejs"));
+// });
+>>>>>>> origin/master
 app.get("/", (req, res) => res.render("Home"));
 app.get("/Blog", requireAuth, (req, res) => res.render("Blog"));
 app.get("/ContactUs", requireAuth, (req, res) => res.render("ContactUs"));
 app.get("/Offers", requireAuth, (req, res) => res.render("Offers"));
 app.get("/Services", requireAuth, (req, res) => res.render("Services"));
+<<<<<<< HEAD
 app.get("/Readmore", requireAuth, (req, res) => res.render("Readmore"));
 
+=======
+
+// app.get("/", requireAuth, (req, res) => {
+//   res.sendFile(path.join(__dirname, "../frontend/Blog.html"));
+// });
+>>>>>>> origin/master
 app.use(authRoutes);
 
 // API endpoint to fetch blogs
@@ -61,6 +86,7 @@ app.get("/api/blogs", async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 //  API endpoint to fetch readmore
 app.get("/api/readmore/:_id", async (req, res) => {
   console.log("GET /api/readmore called");
@@ -198,6 +224,8 @@ app.get("/", async (req, res) => {
   }
 });
 
+=======
+>>>>>>> origin/master
 // Start server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

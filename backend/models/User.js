@@ -2,12 +2,15 @@ const mongoose = require("mongoose");
 const { isEmail } = require("validator");
 const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
+<<<<<<< HEAD
   // username: {
   //   type: String,
   //   required: [true, "Please enter an username"],
   //   unique: true,
   //   lowercase: true,
   // },
+=======
+>>>>>>> origin/master
   email: {
     type: String,
     required: [true, "Please enter an email"],
@@ -20,6 +23,7 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please enter a password"],
     minLength: [6, "Minimum password length is 6 characters."],
   },
+<<<<<<< HEAD
   role: {
     type: String,
     enum: ["viewer", "subscriber"],
@@ -31,6 +35,8 @@ const userSchema = new mongoose.Schema({
   //   required: [true, "Please enter a correct password"],
   //   minLength: [6, "Minimum password length is 6 characters."],
   // },
+=======
+>>>>>>> origin/master
 });
 
 // fire a function aftter doc saved to db

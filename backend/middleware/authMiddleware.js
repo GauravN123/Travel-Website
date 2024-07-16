@@ -3,6 +3,7 @@ const User = require("../models/User");
 
 const requireAuth = (req, res, next) => {
   const token = req.cookies.jwt;
+<<<<<<< HEAD
   if (token) {
     jwt.verify(token, "gaurav secret", (err, decodedToken) => {
       if (err) {
@@ -11,11 +12,24 @@ const requireAuth = (req, res, next) => {
       } else {
         console.log("Decoded token:", decodedToken);
         req.user = decodedToken;
+=======
+  // check json web token exists & is verified
+  if (token) {
+    jwt.verify(token, "gaurav secret", (err, decodedToken) => {
+      if (err) {
+        console.log(err.message);
+        res.redirect("/login");
+      } else {
+        console.log(decodedToken);
+>>>>>>> origin/master
         next();
       }
     });
   } else {
+<<<<<<< HEAD
     console.log("No token found");
+=======
+>>>>>>> origin/master
     res.redirect("/login");
   }
 };
