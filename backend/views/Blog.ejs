@@ -5,49 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blog Page</title>
     <link rel="stylesheet" href="style.css" />
-<<<<<<< HEAD
     <link rel="stylesheet" href="stylelogout.css" />
-=======
->>>>>>> origin/master
   </head>
   <body>
     <nav>
       <div class="nav__logo">
-<<<<<<< HEAD
         <a href="/">Traveller.com</a>
       </div>
       <ul class="nav__links">
         <li><a class="link" href="/">Home</a></li>
-=======
-        <a href="Home.html">Traveller.com</a>
-      </div>
-      <ul class="nav__links">
-        <li><a class="link" href="/Home">Home</a></li>
->>>>>>> origin/master
         <li><a class="link" href="/Blog">Blog</a></li>
         <li><a class="link" href="/Offers">Offers</a></li>
         <li><a class="link" href="/Services">Services</a></li>
         <li><a class="link" href="/ContactUs">ContactUs</a></li>
 
         <% if (user) { %>
-<<<<<<< HEAD
         <li class="dropdown">
           <button class="user-email"><%= user.email %></button>
           <div class="dropdown-content">
             <a href="/logout">Log out</a>
           </div>
         </li>
-=======
-        <li>Welcome, <%= user.email %></li>
-        <li><a href="/logout">Log out</a></li>
->>>>>>> origin/master
         <% } else { %>
         <li><a href="/login">Log in</a></li>
         <li><a href="/signup">Sign up</a></li>
         <% } %>
       </ul>
     </nav>
-<<<<<<< HEAD
     <br />><br><br><br>
     <h1 style="color: white"><center>BLOG</center></h1>
 
@@ -61,20 +45,11 @@
      
     </div>
 
-=======
-    <br /><br /><br />
-    <h1 style="color: white"><center>BLOG</center></h1>
-    <div class="container" id="blog-container">
->>>>>>> origin/master
       <!-- Blog posts will be inserted here by JavaScript -->
       <script>
         document.addEventListener("DOMContentLoaded", async () => {
           try {
-<<<<<<< HEAD
             const response = await fetch("/api/blogs");
-=======
-            const response = await fetch("http://localhost:3000/api/blogs");
->>>>>>> origin/master
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -89,7 +64,6 @@
               blogPost.classList.add("blog-post");
 
               blogPost.innerHTML = `
-<<<<<<< HEAD
               <h2>${blog.title}</h2>
               <div class="blog-content">
                 <img src="${blog.imageUrl}" alt="${blog.title}" />
@@ -107,18 +81,6 @@
               
             `;
             
-=======
-                            <h2>${blog.title}</h2>
-                            <div class="blog-content">
-                                <img src="${blog.imageUrl}" alt="${blog.title}" />
-                                <div class="blog-excerpt">
-                                    <p>${blog.excerpt}</p>
-                                    <br />
-                                    <button class="readmore">Read more</button>
-                                </div>
-                            </div>
-                        `;
->>>>>>> origin/master
 
               blogContainer.appendChild(blogPost);
             });
@@ -126,7 +88,6 @@
             console.error("Error fetching blogs:", error);
           }
         });
-<<<<<<< HEAD
       
        // deleting a blog.
         async function deleteBlog(id) {
@@ -168,8 +129,6 @@
         }
         
       
-=======
->>>>>>> origin/master
       </script>
     </div>
   </body>

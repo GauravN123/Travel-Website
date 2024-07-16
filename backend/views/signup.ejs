@@ -3,13 +3,10 @@
 <!-- <h1>Traveller</h1> -->
 <form>
   <h2>Sign up</h2>
-<<<<<<< HEAD
   <!-- <label for="username">Username</label>
   <input type="text" name="username" required />
   <div class="username error"></div> -->
 
-=======
->>>>>>> origin/master
   <label for="email">Email</label>
   <input type="text" name="email" required />
   <div class="email error"></div>
@@ -18,34 +15,25 @@
   <input type="password" name="password" required />
   <div class="password error"></div>
 
-<<<<<<< HEAD
   <!-- <label for="password">Confirm Password</label>
   <input type="password" name="password" required />
   <div class="password error"></div> -->
 
-=======
->>>>>>> origin/master
   <button>Sign up</button>
   <p>Already an user?<a href="/login">Login</a></p>
 </form>
 
 <script>
   const form = document.querySelector("form");
-<<<<<<< HEAD
   // const usernameError = document.querySelector(".username.error");
   const emailError = document.querySelector(".email.error");
   const passwordError = document.querySelector(".password.error");
   //const confirmpasswordError = document.querySelector(".confirmpassword.error");
-=======
-  const emailError = document.querySelector(".email.error");
-  const passwordError = document.querySelector(".password.error");
->>>>>>> origin/master
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     //reset errors
-<<<<<<< HEAD
     // usernameError.textContent = "";
     emailError.textContent = "";
     passwordError.textContent = "";
@@ -56,14 +44,6 @@
     const email = form.email.value;
     const password = form.password.value;
     // const confirmpassword = form.confirmpassword.value;
-=======
-    emailError.textContent = "";
-    passwordError.textContent = "";
-
-    // get the values
-    const email = form.email.value;
-    const password = form.password.value;
->>>>>>> origin/master
 
     try {
       const res = await fetch("/signup", {
@@ -74,15 +54,10 @@
       const data = await res.json();
       console.log(data);
       if (data.errors) {
-<<<<<<< HEAD
         // usernameError.textContent = data.errors.email;
         emailError.textContent = data.errors.email;
         passwordError.textContent = data.errors.password;
         //  confirmpasswordError.textContent = data.errors.password;
-=======
-        emailError.textContent = data.errors.email;
-        passwordError.textContent = data.errors.password;
->>>>>>> origin/master
       }
       if (data.user) {
         location.assign("/");

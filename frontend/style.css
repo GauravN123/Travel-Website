@@ -25,11 +25,7 @@ body {
   padding: 0;
 }
 
-<<<<<<< HEAD
 /* Section  */
-=======
-/* Section container */
->>>>>>> origin/master
 .section__container {
   padding: 5rem 1rem;
   max-width: var(--max-width);
@@ -806,7 +802,6 @@ textarea.form-control {
   }
 }
 
-<<<<<<< HEAD
 .user-email {
   background-color: #007bff;
   color: white;
@@ -816,7 +811,3 @@ textarea.form-control {
   cursor: pointer;
   border-radius: 4px;
 }
-=======
-
-
->>>>>>> origin/master
