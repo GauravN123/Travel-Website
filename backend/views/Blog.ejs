@@ -46,90 +46,87 @@
     </div>
 
       <!-- Blog posts will be inserted here by JavaScript -->
-      <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-          try {
-            const response = await fetch("/api/blogs");
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const blogs = await response.json();
-            console.log("Blogs fetched:", blogs);
+       <script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const userId = localStorage.getItem('userId'); // Assumes user ID is stored in localStorage
+    const userRole = localStorage.getItem('userRole'); // Assumes user role is also stored in localStorage
+    
+    try {
+      const response = await fetch("/api/blogs");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const blogs = await response.json();
+      console.log("Blogs fetched:", blogs);
 
-            const blogContainer = document.getElementById("blog-container");
-            blogContainer.innerHTML = "";
+      const blogContainer = document.getElementById("blog-container");
+      blogContainer.innerHTML = "";
 
-            blogs.forEach((blog) => {
-              const blogPost = document.createElement("div");
-              blogPost.classList.add("blog-post");
+      blogs.forEach((blog) => {
+        const blogPost = document.createElement("div");
+        blogPost.classList.add("blog-post");
 
-              blogPost.innerHTML = `
-              <h2>${blog.title}</h2>
-              <div class="blog-content">
-                <img src="${blog.imageUrl}" alt="${blog.title}" />
-                <div class="blog-excerpt">
-                  <p>${blog.excerpt}</p>
-                  <br />
-                  <!-- <a class="readmore" href="/readmore/${blog._id}">Read More</a> -->
-                  <% if (user && user.role === 'subscriber') { %>
+        blogPost.innerHTML = `
+          <h2>${blog.title}</h2>
+          <div class="blog-content">
+            <img src="${blog.imageUrl}" alt="${blog.title}" />
+            <div class="blog-excerpt">
+              <p>${blog.excerpt}</p>
+              <br />
+              ${userId == blog.createdBy ? `
+                <a href="/edit-blog/${blog._id}" class="button"><center><u>Edit</u></center></a>
+                <button onclick="deleteBlog('${blog._id}')" class="button">Delete</button>
+              ` : ''}
+            </div>
+          </div>
+        `;
 
-             <a href="/edit-blog" class="button"><center><u>Edit</u></center></a>
-             <button onclick="deleteBlog('${blog._id}')" class="button">Delete</button>
-                  <% } %>
-                </div>
-              </div>
-              
-            `;
-            
+        blogContainer.appendChild(blogPost);
+      });
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    }
+  });
 
-              blogContainer.appendChild(blogPost);
-            });
-          } catch (error) {
-            console.error("Error fetching blogs:", error);
-          }
-        });
-      
-       // deleting a blog.
-        async function deleteBlog(id) {
-          try {
-            const response = await fetch(`/api/blogs/${id}`, {
-              method: "DELETE",
-            });
-            if (response.ok) {
-              window.location.reload();
-            } else {
-              alert("Error deleting blog");
-            }
-          } catch (error) {
-            console.error("Error deleting blog:", error);
-          }
-        }
+  // deleting a blog.
+  async function deleteBlog(id) {
+    try {
+      const response = await fetch(`/api/blogs/${id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        alert("Error deleting blog");
+      }
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+    }
+  }
 
+  // editing a blog.
+  async function editBlog(id, updatedBlogData) {
+    try {
+      const response = await fetch(`/api/blogs/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedBlogData),
+      });
+  
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        const errorData = await response.json();
+        alert(`Error editing blog: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error("Error editing blog:", error);
+    }
+  }
+</script>
 
-       // editing a blog.
-        async function editBlog(id, updatedBlogData) {
-          try {
-            const response = await fetch(`/api/blogs/${id}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(updatedBlogData),
-            });
-        
-            if (response.ok) {
-              window.location.reload();
-            } else {
-              const errorData = await response.json();
-              alert(`Error editing blog: ${errorData.error}`);
-            }
-          } catch (error) {
-            console.error("Error editing blog:", error);
-          }
-        }
-        
-      
-      </script>
     </div>
   </body>
 </html>

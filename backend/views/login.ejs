@@ -44,6 +44,7 @@
         passwordError.textContent = data.errors.password;
       }
       if (data.user) {
+        localStorage.setItem("userId", data.user);
         location.assign("/");
       }
     } catch (err) {

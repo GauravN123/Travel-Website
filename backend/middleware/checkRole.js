@@ -6,6 +6,7 @@ function checkRole(requiredRole) {
     }
 
     const userRole = req.user.role;
+    console.log(userRole);
     if (!userRole) {
       console.log("Forbidden: User role not found");
       return res.status(403).send("Forbidden: User role not found");

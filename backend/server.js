@@ -36,14 +36,26 @@ app.set("view engine", "ejs");
 // app.engine("html", require("ejs").renderFile); // Allow rendering .html files using EJS
 
 // Define routes
-app.get("*", checkUser);
+// app.get("*", checkUser);
 
-app.get("/", (req, res) => res.render("Home"));
-app.get("/Blog", requireAuth, (req, res) => res.render("Blog"));
-app.get("/ContactUs", requireAuth, (req, res) => res.render("ContactUs"));
-app.get("/Offers", requireAuth, (req, res) => res.render("Offers"));
-app.get("/Services", requireAuth, (req, res) => res.render("Services"));
-app.get("/Readmore", requireAuth, (req, res) => res.render("Readmore"));
+app.get("/", requireAuth, checkUser, (req, res) => {
+  return res.render("Home", { user: req.user });
+});
+app.get("/blog", requireAuth, checkUser, (req, res) => {
+  return res.render("Blog", { user: req.user });
+});
+app.get("/ContactUs", requireAuth, checkUser, (req, res) => {
+  return res.render("ContactUs", { user: req.user });
+});
+app.get("/Offers", requireAuth, checkUser, (req, res) => {
+  return res.render("Offers", { user: req.user });
+});
+app.get("/Services", requireAuth, checkUser, (req, res) => {
+  return res.render("Services", { user: req.user });
+});
+app.get("/Readmore", requireAuth, checkUser, (req, res) => {
+  return res.render("Readmore", { user: req.user });
+});
 
 app.use(authRoutes);
 
@@ -61,7 +73,7 @@ app.get("/api/blogs", async (req, res) => {
 });
 
 //  API endpoint to fetch readmore
-app.get("/api/readmore/:_id", async (req, res) => {
+app.get("/api/readmore/:id", async (req, res) => {
   console.log("GET /api/readmore called");
   try {
     const readmore = await Readmore.find({});
@@ -73,91 +85,106 @@ app.get("/api/readmore/:_id", async (req, res) => {
   }
 });
 
-// // Route to create a new blog (restricted to subscribers)
-// app.post("/api/blogs", checkRole("subscriber"), async (req, res) => {
-//   try {
-//     const newBlog = new Blog(req.body);
-//     await newBlog.save();
-//     res.status(201).json(newBlog);
-//   } catch (err) {
-//     console.error("Error creating blog:", err.message);
-//     res.status(500).send({ error: "Failed to create blog" });
-//   }
-// });
-
-// Route to serve the edit blog page
-// app.get("/edit-blog/:id", async (req, res) => {
-//   try {
-//     const blog = await Blog.findById(req.params.id);
-//     if (!blog) {
-//       return res.status(404).send("Blog not found");
-//     }
-//     res.render("edit-blog", { blog });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send("Server error");
-//   }
-// });
-// Route to edit an existing blog (restricted to subscribers)
-app.put("/api/blogs/:id", async (req, res) => {
+async function checkBlogOwnership(req, res, next) {
   try {
-    const { id } = req.params;
-    const updatedBlogData = req.body;
-    const updatedBlog = await Blog.findByIdAndUpdate(id, updatedBlogData, {
-      new: true,
-    });
-
-    if (!updatedBlog) {
-      return res.status(404).json({ error: "Blog not found" });
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) {
+      return res.status(404).send("Blog not found");
     }
 
-    res
-      .status(200)
-      .json({ message: "Blog updated successfully", blog: updatedBlog });
+    if (!blog.createdBy.equals(req.user.id)) {
+      return res
+        .status(403)
+        .send("Forbidden: You can only edit or delete your own blogs");
+    }
+
+    next();
   } catch (err) {
-    console.error("Error updating blog:", err.message);
-    res
-      .status(500)
-      .json({ error: "Failed to update blog", details: err.message });
+    console.error("Error checking blog ownership:", err.message);
+    res.status(500).send("Server Error");
   }
-});
+}
+
+app.get(
+  "/edit-blog/:id",
+  checkUser,
+  checkRole("subscriber"),
+  async (req, res) => {
+    try {
+      const blog = await Blog.findById(req.params.id);
+      if (!blog) {
+        return res.status(404).send("Blog not found");
+      }
+      res.render("edit-blog", { blog, user: req.user });
+    } catch (err) {
+      console.error("Error fetching blog:", err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+// app.get("/edit-blog", async (req, res) => {
+//   res.render("edit-blog");
+// });
+
+// Route to edit an existing blog (restricted to subscribers)
+app.put(
+  "/api/blogs/:id",
+  checkUser,
+  checkRole("subscriber"),
+  checkBlogOwnership,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updatedBlogData = req.body;
+      const updatedBlog = await Blog.findByIdAndUpdate(id, updatedBlogData, {
+        new: true,
+      });
+
+      if (!updatedBlog) {
+        return res.status(404).json({ error: "Blog not found" });
+      }
+
+      res
+        .status(200)
+        .json({ message: "Blog updated successfully", blog: updatedBlog });
+    } catch (err) {
+      console.error("Error updating blog:", err.message);
+      res
+        .status(500)
+        .json({ error: "Failed to update blog", details: err.message });
+    }
+  }
+);
 
 // DELETE route for deleting a blog
-app.delete("/api/blogs/:id", requireAuth, async (req, res) => {
-  const blogId = req.params.id;
+app.delete(
+  "/api/blogs/:id",
+  requireAuth,
+  checkBlogOwnership,
+  async (req, res) => {
+    const blogId = req.params.id;
 
-  try {
-    const blog = await Blog.findByIdAndDelete(blogId);
+    try {
+      const blog = await Blog.findByIdAndDelete(blogId);
 
-    if (!blog) {
-      return res.status(404).send({ error: "Blog not found" });
+      if (!blog) {
+        return res.status(404).send({ error: "Blog not found" });
+      }
+
+      res.status(200).send({ message: "Blog deleted successfully" });
+    } catch (err) {
+      console.error("Error deleting blog:", err.message);
+      res
+        .status(500)
+        .send({ error: "Failed to delete blog", details: err.message });
     }
-
-    res.status(200).send({ message: "Blog deleted successfully" });
-  } catch (err) {
-    console.error("Error deleting blog:", err.message);
-    res
-      .status(500)
-      .send({ error: "Failed to delete blog", details: err.message });
   }
-});
+);
 
 // create new blog
-app.get("/create-blog", (req, res) => {
-  res.render("create-blog");
-});
-
-app.get("/edit-blog", async (req, res) => {
-  // try {
-  //   const blog = await Blog.findById(req.params.id);
-  //   if (!blog) {
-  //     return res.status(404).send("Blog not found");
-  //   }
-  // } catch (err) {
-  //   console.error(err);
-  //   res.status(500).send("Server error");
-  // }
-  res.render("edit-blog");
+app.get("/create-blog", checkUser, (req, res) => {
+  res.render("create-blog", { user: req.user });
 });
 
 // Route to handle form submission and create a new blog
@@ -173,7 +200,7 @@ app.post(
         title,
         imageUrl,
         excerpt,
-        author: req.user.id, // Associate the blog with the user creating it
+        createdBy: req.user.id, // Associate the blog with the user creating it
       });
       await newBlog.save();
       res.redirect("/Blog");
