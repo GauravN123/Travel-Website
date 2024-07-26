@@ -10,7 +10,7 @@ const { requireAuth, checkUser } = require("./middleware/authMiddleware.js");
 const checkRole = require("./middleware/checkRole");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Connect to MongoDB
 const uri = "mongodb+srv://Gaurav:welcome123@cluster0.93ry3pd.mongodb.net/blog";
